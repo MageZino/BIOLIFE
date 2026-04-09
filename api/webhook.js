@@ -2,7 +2,7 @@ export default async function handler(req, res) {
 
   // 🔐 valida token (SEGURANÇA)
   const tokenRecebido = req.headers['asaas-access-token'];
-  const meuToken = "whsec_aBjNSMlYQoRUna9DgQSvdko0Ts_NK2EawBXEKt5koSE3";
+  const meuToken = "whsec_GuU5mlagzk4wqLPZAodRSZvOMDzKsohQLCD5XO0oLzU";
 
   if (tokenRecebido !== meuToken) {
     console.log("❌ Token inválido");
