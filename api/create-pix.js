@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const apiKey = "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjQwMzVmZTVjLTY2NDYtNGQwZS1iNWRkLTMxOTQ5ZjdjZGRhYjo6JGFhY2hfN2NkMWI3NGMtOWY3ZC00M2E2LWI4ZTItZmVjNTY1YmE0YmUy";
+  const apiKey = "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjViN2Y1YTk4LThlOWItNDMyMC05YzQxLWJkYTdlMjExNGIxYzo6JGFhY2hfYWRkZTBhNzYtNmYxOC00NTlkLWE2MzQtMmYwNmE1YTEyNWVk";
 
   // AGORA RECEBEMOS: nomeProduto e preco do frontend
   const { 
