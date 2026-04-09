@@ -1015,38 +1015,67 @@ html {
 }
 
 @media (max-width: 768px) {
-    /* Ajusta a altura da seção hero para não cortar a imagem no mobile */
+    /* 1. Ajusta o container principal para dar espaço ao conteúdo */
     .hero {
-        height: 50vh !important; /* Ajuste essa altura se ainda parecer cortado */
-        margin-top: 80px;
+        height: 500px !important; /* Altura fixa garante que nada suma */
+        margin-top: 60px;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* Evita que os botões fiquem um em cima do outro */
-    .carousel-button {
-        width: 35px !important;
-        height: 35px !important;
-        font-size: 1.1rem !important;
+    /* 2. Garante que o item do carrossel ocupe a altura toda */
+    .carousel-item {
+        height: 100% !important;
     }
 
-    .carousel-button.prev {
-        left: 10px !important; /* Cola mais no canto esquerdo */
+    /* 3. Centraliza o texto e evita que ele brigue com as setas */
+    .carousel-content {
+        width: 85% !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important; /* Centralização perfeita */
+        padding: 15px !important;
+        text-align: center;
     }
 
-    .carousel-button.next {
-        right: 10px !important; /* Cola mais no canto direito */
-    }
-
-    /* Ajusta o conteúdo (texto) para não sumir ou ficar gigante */
     .carousel-content h1 {
-        font-size: 1.5rem !important;
+        font-size: 1.6rem !important;
+        margin-bottom: 8px !important;
+        line-height: 1.2 !important;
     }
     
     .carousel-content p {
+        font-size: 0.95rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 15px !important;
+        display: block !important; /* Removemos o line-clamp para o texto respirar se for curto */
+    }
+
+    /* 4. Botões de navegação: pequenos e nas extremidades */
+    .carousel-button {
+        width: 32px !important;
+        height: 32px !important;
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-radius: 50% !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 10;
+    }
+
+    .carousel-button.prev {
+        left: 5px !important;
+    }
+
+    .carousel-button.next {
+        right: 5px !important;
+    }
+
+    /* 5. Ajusta o botão principal para não ficar gigante */
+    .btn-primary {
+        padding: 10px 20px !important;
         font-size: 0.9rem !important;
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* Limita a 2 linhas para não empurrar os botões */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        width: auto !important;
+        display: inline-block !important;
     }
 }
 
