@@ -180,7 +180,7 @@
 <div class="overlay" id="overlay">
   <div class="popup">
     <h3>Pagamento via PIX</h3>
-    <img id="qr-img">
+    <img id="qr-code-img" src="" alt="QR Code Pix" style="width: 200px; height: 200px;" />
     <p><strong id="pix-code"></strong></p>
   </div>
 </div>
@@ -197,27 +197,46 @@ window.onload = () => {
 };
 
 document.getElementById('btnConfirmar').onclick = async () => {
+  // Mostra um aviso ou muda o texto do botão para o usuário saber que está carregando
+  const btn = document.getElementById('btnConfirmar');
+  btn.innerText = "Gerando PIX...";
+  btn.disabled = true;
 
-  const dados = {
-    nome: nome.value,
-    email: email.value,
-    telefone: telefone.value
-  };
+  try {
+    const dadosForm = {
+      nome: document.getElementById('nome').value,
+      email: document.getElementById('email').value,
+      telefone: document.getElementById('telefone').value
+    };
 
-  const response = await fetch('/api/create-pix', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(dados)
-  });
+    const response = await fetch('/api/create-pix', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(dadosForm)
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  document.getElementById('qr-img').src =
-    `data:image/png;base64,${data.qr_code_base64}`;
+    if (data.qr_code_base64) {
+      // 1. CORREÇÃO DO ID: Aqui deve ser 'qr-code-img' para bater com o seu HTML
+      // 2. CORREÇÃO DO SRC: Como o backend já envia o prefixo, usamos direto o data.qr_code_base64
+      document.getElementById('qr-code-img').src = data.qr_code_base64;
 
-  document.getElementById('pix-code').textContent = data.payload;
+      // Coloca o código copia e cola
+      document.getElementById('pix-code').textContent = data.payload;
 
-  document.getElementById('overlay').style.display = 'flex';
+      // Abre o popup
+      document.getElementById('overlay').style.display = 'flex';
+    } else {
+      alert("Erro ao gerar o pagamento. Verifique os dados.");
+    }
+  } catch (error) {
+    console.error("Erro:", error);
+    alert("Erro na conexão com o servidor.");
+  } finally {
+    btn.innerText = "Pagar com PIX";
+    btn.disabled = false;
+  }
 };
 </script>
 
