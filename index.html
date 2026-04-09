@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioLife - Suplementos Premium para Academia</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="assets/img/logo.png" rel="icon" type="image/png">
+</head>
+
+
+
+<body>
+
+    <!-- Efeitos -->
+    <div class="page-slide"></div>
+    <div class="page-transition"></div>
+    <div class="scan-effect"></div>
+    
+
+    <!-- Loader -->
+    <div id="loader">
+        <canvas id="matrix"></canvas>
+
+        <div class="loader-content">
+            <img src="assets/img/logo.png" class="loader-logo">
+            <h1 class="loader-title">BioLife</h1>
+
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+
+            <span id="loader-percent">0%</span>
+            <p class="loader-sub">Loading . . .</p>
+        </div>
+
+        
+    </div>
+ 
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <!-- Logo do site -->
+                    <img src="assets/img/logo.png" alt="Logo BioLife" class="logo-img">
+                    <span class="logo-text">BioLife</span>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li><a href="#inicio" class="nav-link">Início</a></li>
+                    <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                    <li><a href="#suplementos" class="nav-link">Suplementos</a></li>
+                    <li><a href="#contato" class="nav-link">Contato</a></li>
+                </ul>
+
+                <div class="nav-controls">
+                    <button class="theme-toggle" id="themeToggle">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <!-- Hero Section with Carousel -->
+    <section id="inicio" class="hero">
+        <div class="carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <div class="carousel-slide">
+                            <img src="assets/img/Carrossel 1.png" alt="Fitness e Nutrição">
+                            <div class="carousel-content">
+                                <h1>Transforme seu Corpo com BioLife</h1>
+                                <p>Suplementos premium para maximizar seus resultados na academia</p>
+                                <a href="#suplementos" class="cta-button">Conheça os Suplementos</a>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/img/trew.png" alt="Suplementos">
+                            <div class="carousel-content">
+                                <h1>Qualidade que Faz a Diferença</h1>
+                                <p>Fórmulas cientificamente desenvolvidas para atletas exigentes</p>
+                                <a href="#sobre" class="cta-button">Saiba Mais</a>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="assets/img/Carrossel 3.png" alt="Resultados Comprovados">
+                            <div class="carousel-content">
+                                <h1>Resultados Comprovados</h1>
+                                <p>Milhares de atletas já conquistaram seus objetivos conosco</p>
+                                <a href="#contato" class="cta-button">Junte-se a Nós</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+            <button class="carousel-button prev" id="prevBtn">‹</button>
+            <button class="carousel-button next" id="nextBtn">›</button>
+            
+            <div class="carousel-indicators">
+                <span class="indicator active" data-slide="0"></span>
+                <span class="indicator" data-slide="1"></span>
+                <span class="indicator" data-slide="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="about">
+        <div class="container">
+            <h2 class="section-title">Sobre a BioLife</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Por que BioLife?</h3>
+                    <p>Nosso nome carrega o propósito de transmitir vitalidade, equilíbrio e bem-estar. Ele reflete a união entre a vida saudável, os meios atléticos do cotidiano e os cuidados essenciais com a saúde. A marca busca inspirar pessoas a viverem de forma plena, com energia e consciência, valorizando o corpo e a mente em todas as etapas do dia a dia.</p>
+                    <ul>
+                        <li>✓ Ingredientes naturais e seguros</li>
+                        <li>✓ Certificação internacional</li>
+                        <li>✓ Resultados comprovados</li>
+                        <li>✓ Suporte nutricional especializado</li>
+                    </ul>
+                </div>
+                
+                <div class="about-card">
+                    <h3>O que é a BioLife?</h3>
+                    <p>Somos uma empresa especializada em nutrição esportiva, oferecendo uma linha completa de suplementos para diferentes modalidades e objetivos, desde ganho de massa muscular até definição e performance.</p>
+                    <ul>
+                        <li>✓ Produtos testados em laboratório</li>
+                        <li>✓ Entrega rápida e segura</li>
+                        <li>✓ Satisfação garantida</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="suplementos" class="products">
+    <div class="container">
+        <h2 class="section-title">Nossos Suplementos</h2>
+        <div class="products-grid">
+
+            <!-- DARKLAB (ativo) -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/img/darklab.jpeg" alt="DarkLab">
+                </div>
+                <div class="product-info">
+                    <h3>DarkLab</h3>
+                    <p>Pré-treino potente para máxima energia e foco durante os treinos mais intensos.</p>
+                    <a href="darklab.html" class="product-button">Ver Detalhes</a>
+                </div>
+            </div>
+
+            <!-- INTEGRAL (em andamento) -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/img/integral.jpeg" alt="Integral">
+                </div>
+                <div class="product-info">
+                    <h3>Integral</h3>
+                    <p>Whey protein isolado com aminoácidos essenciais para recuperação muscular.</p>
+                    <button class="product-button disabled" disabled>Em andamento</button>
+                </div>
+            </div>
+
+            <!-- BLACKSKULL (em andamento) -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/img/blackskull.jpeg" alt="BlackSkull">
+                </div>
+                <div class="product-info">
+                    <h3>BlackSkull</h3>
+                    <p>Creatina monoidratada pura para ganho de força e volume muscular que faz a diferença.</p>
+                    <button class="product-button disabled" disabled>Em andamento</button>
+                </div>
+            </div>
+
+            <!-- GROWTH (em andamento) -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="assets/img/Growth.png" alt="Growth">
+                </div>
+                <div class="product-info">
+                    <h3>Growth</h3>
+                    <p>Hipercalórico com vitaminas e minerais para ganho de massa muscular.</p>
+                    <button class="product-button disabled" disabled>Em andamento</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contato" class="contact">
+        <div class="container">
+            <h2 class="section-title">Entre em Contato</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Fale Conosco</h3>
+                    <p>Tire suas dúvidas sobre nossos produtos ou solicite orientação nutricional personalizada.</p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <span class="contact-icon">📧</span>
+                            <span>biolifecontato12@gmail.com</span>
+                        </div>
+                        <div class="contact-method">
+                            <span class="contact-icon">📱</span>
+                            <span>(31) 99999-9999</span>
+                        </div>
+                        <div class="contact-method">
+                            <span class="contact-icon">📍</span>
+                            <span>Sete Lagoas, MG - Brasil</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <h3>Siga-nos nas Redes</h3>
+                    <div class="social-icons">
+                        <a href="" class="social-link whatsapp">
+                            <span class="social-icon">💬</span>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="https://www.instagram.com/bio_life_gym/?next=%2F" class="social-link instagram">
+                            <span class="social-icon">📷</span>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="social-link facebook">
+                            <span class="social-icon">👍</span>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-text">BioLife</span>
+                    <p>Transformando vidas através da nutrição esportiva</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Produtos</h4>
+                        <a href="#">Proteínas</a>
+                        <a href="#">Pré-treinos</a>
+                        <a href="#">Creatinas</a>
+                        <a href="#">Vitaminas</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Suporte</h4>
+                        <a href="#">FAQ</a>
+                        <a href="#">Contato</a>
+                        <a href="#">Garantia</a>
+                        <a href="#">Envios</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BioLife. DEV-Mage.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

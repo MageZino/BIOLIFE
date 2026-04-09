@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Pagamento</title>
+  <link href="assets/img/logo.png" rel="icon" type="image/png">
+
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --bg-dark: #0a0a0a;
+      --text-light: #f1f1f1;
+      --surface-color: #101010;
+      --surface-alt: #1a1a1a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .checkout-container {
+      width: 1100px;
+      display: flex;
+      background: var(--surface-alt);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    .left {
+      width: 45%;
+      padding: 40px;
+      background: var(--surface-color);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo img {
+      width: 130px;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      font-size: 1.4rem;
+      margin: 20px 0 10px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #1e1e1e;
+      color: white;
+    }
+
+    .row { display: flex; gap: 10px; }
+
+    .right {
+      width: 55%;
+      padding: 40px;
+    }
+
+    .produto {
+      height: 160px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .produto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .order-summary {
+      background: var(--surface-color);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .order-item, .order-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .order-total {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .btn-confirmar {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--primary-color);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .popup img {
+      width: 250px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="checkout-container">
+
+  <div class="left">
+    <div class="logo"><img src="assets/img/logo.png"></div>
+
+    <h2>Contato</h2>
+    <input id="nome" placeholder="Nome">
+    <input id="email" placeholder="Email">
+    <input id="telefone" placeholder="Telefone">
+
+    <button class="btn-confirmar" id="btnConfirmar">Pagar com PIX</button>
+  </div>
+
+  <div class="right">
+    <div class="produto">
+      <img id="produto-img">
+    </div>
+
+    <div class="order-summary">
+      <div class="order-item">
+        <span>Produto</span>
+        <span id="produto-preco"></span>
+      </div>
+
+      <div class="order-total">
+        <span>Total</span>
+        <span id="total-preco"></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <h3>Pagamento via PIX</h3>
+    <img id="qr-img">
+    <p><strong id="pix-code"></strong></p>
+  </div>
+</div>
+
+<script>
+window.onload = () => {
+  const produto = JSON.parse(localStorage.getItem('produtoSelecionado'));
+
+  if (produto) {
+    document.getElementById('produto-img').src = produto.imagem;
+    document.getElementById('produto-preco').textContent = 'R$ ' + produto.preco.toFixed(2);
+    document.getElementById('total-preco').textContent = 'R$ ' + produto.preco.toFixed(2);
+  }
+};
+
+document.getElementById('btnConfirmar').onclick = async () => {
+
+  const dados = {
+    nome: nome.value,
+    email: email.value,
+    telefone: telefone.value
+  };
+
+  const response = await fetch('/api/create-pix', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(dados)
+  });
+
+  const data = await response.json();
+
+  document.getElementById('qr-img').src =
+    `data:image/png;base64,${data.qr_code_base64}`;
+
+  document.getElementById('pix-code').textContent = data.payload;
+
+  document.getElementById('overlay').style.display = 'flex';
+};
+</script>
+
+</body>
+</html>
