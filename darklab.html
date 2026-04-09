@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suplementos DarkLab</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Suplementos DarkLab | BioLife</title>
   <link href="assets/img/logo.png" rel="icon" type="image/png">
   <style>
     :root {
@@ -15,52 +14,54 @@
       --surface-alt: #1a1a1a;
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg-dark);
       color: var(--text-light);
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
+    /* Fundo de Partículas */
     #particles {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: -1;
-      background: var(--bg-dark);
-      overflow: hidden;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
     }
 
     .particle {
       position: absolute;
-      background: rgba(76, 175, 80, 0.4);
+      background: var(--primary-color);
       border-radius: 50%;
-      animation: fall linear infinite;
+      opacity: 0.3;
+      pointer-events: none;
+      animation: move linear infinite;
     }
 
-    @keyframes fall {
-      from { transform: translateY(-10vh) scale(0.8); opacity: 1; }
-      to { transform: translateY(110vh) scale(0.3); opacity: 0; }
+    @keyframes move {
+      from { transform: translateY(100vh); }
+      to { transform: translateY(-10vh); }
     }
 
+    /* Navbar - Mantendo o estilo do PC */
     .navbar {
-      text-align: center;
-      padding: 20px;
-      background: rgba(10,10,10,0.95);
+      padding: 15px 5%;
+      background: rgba(10, 10, 10, 0.9);
       position: sticky;
       top: 0;
       z-index: 1000;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(76, 175, 80, 0.2);
     }
 
     .navbar-content {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -68,176 +69,174 @@
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 15px;
     }
 
     .logo-area img {
-      height: 100px;
-      width: auto;
-      border-radius: 8px;
-      filter: drop-shadow(0 0 8px rgba(76,175,80,0.3));
+      height: 60px;
+      filter: drop-shadow(0 0 5px var(--primary-color));
     }
 
     .logo-area h1 {
-      font-size: 2.46rem;
+      font-size: 1.5rem;
       color: var(--primary-color);
-      margin: 0;
-      filter: drop-shadow(0 0 8px rgba(76,175,80,0.3));
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+    .nav-buttons { display: flex; gap: 10px; }
 
     .nav-buttons a {
-      background: var(--surface-alt);
-      padding: 10px 18px;
-      border-radius: 25px;
       text-decoration: none;
       color: white;
-      font-weight: 500;
-      transition: all 0.3s;
+      font-size: 0.85rem;
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: 0.3s;
+      background: rgba(255,255,255,0.05);
     }
 
     .nav-buttons a:hover {
       background: var(--primary-color);
-      transform: scale(1.1);
+      color: black;
+      font-weight: bold;
     }
 
+    /* MECÂNICA DE SURGIR (REVEAL) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(80px);
+      transition: all 1s ease-out;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Seções de Produtos */
     .category-section {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 30px;
-      padding: 60px 5%;
-      background: linear-gradient(145deg, var(--surface-color), var(--surface-alt));
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      gap: 40px;
+      padding: 100px 10%;
+      min-height: 95vh; /* Volta a ocupar quase a tela toda no PC */
+    }
+
+    .category-section:nth-child(even) {
+      flex-direction: row-reverse;
+      background: rgba(76, 175, 80, 0.02);
     }
 
     .category-carousel {
       flex: 1;
       min-width: 300px;
-      max-width: 600px;
-      position: relative;
+      max-width: 500px;
+    }
+
+    .carousel-container {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+      transition: 0.5s;
+    }
+
+    .carousel-container img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
+
+    /* MECÂNICA DE TOMBAR (SÓ NO PC) */
+    @media (hover: hover) {
+      .carousel-container:hover img {
+        transform: rotate(-6deg) scale(1.1); /* Tombo mais agressivo no PC */
+      }
+      .category-section:nth-child(even) .carousel-container:hover img {
+        transform: rotate(6deg) scale(1.1);
+      }
     }
 
     .info-panel {
       flex: 1;
-      min-width: 280px;
-      background: rgba(20,20,20,0.9);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0px 0px 20px rgba(76,175,80,0.3);
-      transition: 0.3s;
-    }
-
-    .info-panel:hover {
-      transform: scale(1.02);
-      box-shadow: 0px 0px 25px rgba(76,175,80,0.5);
+      min-width: 300px;
+      padding: 20px;
     }
 
     .info-panel h2 {
-      font-size: 2rem;
+      font-size: 2.8rem; /* Títulos grandes de volta */
       color: var(--primary-color);
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .info-panel p {
+      font-size: 1.1rem;
+      color: #bbb;
+      margin-bottom: 25px;
       line-height: 1.6;
-      margin-bottom: 20px;
-      color: #ccc;
     }
 
     .features {
       list-style: none;
-      padding: 0;
-      margin: 0 0 20px 0;
+      margin-bottom: 30px;
     }
 
     .features li {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
     }
 
     .features li::before {
-      content: "✔";
-      margin-right: 10px;
+      content: "✓";
+      margin-right: 15px;
       color: var(--primary-color);
+      font-weight: bold;
+      background: rgba(76, 175, 80, 0.1);
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+
+    .price-tag {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin-bottom: 25px;
+      color: #fff;
+      display: block;
     }
 
     .btn {
       display: inline-block;
-      padding: 12px 20px;
+      padding: 18px 50px;
       background: var(--primary-color);
       color: white;
-      border-radius: 25px;
+      border-radius: 50px;
       text-decoration: none;
       font-weight: bold;
-      transition: 0.3s;
+      text-transform: uppercase;
+      border: none;
       cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
     }
 
     .btn:hover {
-      background: #3b9a43;
-      transform: scale(1.05);
+      background: #45a049;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(76, 175, 80, 0.4);
     }
 
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      border-radius: 15px;
-      box-shadow: 0px 0px 20px rgba(0,0,0,0.7);
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.7s ease-in-out;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      flex-shrink: 0;
-    }
-
-    .carousel-slide img {
-      width: 100%;
-      height: 65vh;
-      object-fit: cover;
-      border-radius: 15px;
-    }
-
-    .carousel-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      font-size: 2rem;
-      cursor: pointer;
-      padding: 10px 15px;
-      border-radius: 50%;
-      z-index: 10;
-      transition: 0.3s;
-    }
-
-    .carousel-button:hover {
-      background: var(--primary-color);
-      transform: scale(1.2);
-    }
-
-    .carousel-button.prev {
-      left: 15px;
-    }
-
-    .carousel-button.next {
-      right: 15px;
+    /* APENAS O QUE MUDA NO MOBILE */
+    @media (max-width: 768px) {
+      .category-section { padding: 60px 5%; text-align: center; min-height: auto; }
+      .category-section:nth-child(even) { flex-direction: column; }
+      .info-panel h2 { font-size: 2rem; }
+      .features li { justify-content: center; }
+      .btn { width: 100%; }
+      .logo-area h1 { font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -247,84 +246,100 @@
   <header class="navbar">
     <div class="navbar-content">
       <div class="logo-area">
-        <img src="assets/img/logo.png" alt="Logo DarkLab">
-        <h1>Suplementos DarkLab</h1>
+        <img src="assets/img/logo.png" alt="Logo BioLife">
+        <h1>DarkLab Series</h1>
       </div>
-      <div class="nav-buttons">
-        <a href="#whey">Whey Protein</a>
+      <nav class="nav-buttons">
+        <a href="#whey">Whey</a>
         <a href="#creatina">Creatina</a>
-        <a href="#hipercalorico">Hipercalórico</a>
-        <a href="index.html">Voltar</a>
-      </div>
+        <a href="#hipercalorico">Massa</a>
+        <a href="index.html">Back</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Whey -->
-  <section id="whey" class="category-section">
+  <section id="whey" class="category-section reveal">
     <div class="category-carousel">
       <div class="carousel-container">
-        <div class="carousel-track">
-          <div class="carousel-slide"><img src="assets/img/WheyDarkLab.jpeg" alt="Whey"></div>
-        </div>
+        <img src="assets/img/WheyDarkLab.jpeg" alt="Whey Protein">
       </div>
     </div>
     <div class="info-panel">
       <h2>Whey Protein</h2>
-      <p>Alta concentração de proteínas para ganho de massa magra e recuperação muscular.</p>
+      <p>A proteína isolada e concentrada perfeita para quem busca definição e recuperação muscular imediata pós-treino.</p>
       <ul class="features">
-        <li>Rápida absorção</li>
-        <li>Sabores intensos</li>
-        <li>Alto valor biológico</li>
+        <li>24g de Proteína por dose</li>
+        <li>Baixo teor de carboidratos</li>
+        <li>Mix completo de Aminoácidos (BCAA)</li>
       </ul>
-      <button class="btn" onclick="comprar('Whey Protein DarkLab', 'assets/img/WheyDarkLab.jpeg', 130.00)">Comprar agora</button>
+      <span class="price-tag">R$ 130,00</span>
+      <button class="btn" onclick="comprar('Whey Protein DarkLab', 'assets/img/WheyDarkLab.jpeg', 130.00)">Comprar Agora</button>
     </div>
   </section>
 
-  <!-- Creatina -->
-  <section id="creatina" class="category-section">
+  <section id="creatina" class="category-section reveal">
     <div class="category-carousel">
       <div class="carousel-container">
-        <div class="carousel-track">
-          <div class="carousel-slide"><img src="assets/img/CreatinaDarkLab.jpeg" alt="Creatina"></div>
-        </div>
+        <img src="assets/img/CreatinaDarkLab.jpeg" alt="Creatina">
       </div>
     </div>
     <div class="info-panel">
-      <h2>Creatina</h2>
-      <p>Força, explosão muscular e performance garantidas para treinos intensos.</p>
+      <h2>Creatina Pure</h2>
+      <p>Aumente sua força bruta e explosão muscular. O suplemento mais estudado e eficiente do mundo para performance.</p>
       <ul class="features">
-        <li>Mais energia</li>
-        <li>Melhora a performance</li>
-        <li>Aumenta a força</li>
+        <li>100% Pura Mono-hidratada</li>
+        <li>Aumento real de força</li>
+        <li>Melhora a hidratação celular</li>
       </ul>
-      <button class="btn" onclick="comprar('Creatina DarkLab', 'assets/img/CreatinaDarkLab.jpeg', 44.99)">Comprar agora</button>
+      <span class="price-tag">R$ 44,99</span>
+      <button class="btn" onclick="comprar('Creatina DarkLab', 'assets/img/CreatinaDarkLab.jpeg', 44.99)">Comprar Agora</button>
     </div>
   </section>
 
-  <!-- Hipercalórico -->
-  <section id="hipercalorico" class="category-section">
+  <section id="hipercalorico" class="category-section reveal">
     <div class="category-carousel">
       <div class="carousel-container">
-        <div class="carousel-track">
-          <div class="carousel-slide"><img src="assets/img/HipercaloricoDarkLab.jpeg" alt="Hipercalórico"></div>
-        </div>
+        <img src="assets/img/HipercaloricoDarkLab.jpeg" alt="Hipercalórico">
       </div>
     </div>
     <div class="info-panel">
       <h2>Hipercalórico</h2>
-      <p>Ideal para aumento de massa e reposição calórica completa.</p>
+      <p>Desenvolvido para quem tem dificuldade em ganhar peso. Reposição calórica de alta qualidade para ganho de massa bruta.</p>
       <ul class="features">
-        <li>Alta concentração calórica</li>
-        <li>Vitaminas essenciais</li>
+        <li>Mix de Carboidratos Complexos</li>
+        <li>Enriquecido com Vitaminas</li>
         <li>Ganho de massa garantido</li>
       </ul>
-      <button class="btn" onclick="comprar('Hipercalórico DarkLab', 'assets/img/HipercaloricoDarkLab.jpeg', 135.00)">Comprar agora</button>
+      <span class="price-tag">R$ 135,00</span>
+      <button class="btn" onclick="comprar('Hipercalórico DarkLab', 'assets/img/HipercaloricoDarkLab.jpeg', 135.00)">Comprar Agora</button>
     </div>
   </section>
 
   <script>
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 3 + 2 + 'px';
+      p.style.width = size; p.style.height = size;
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = Math.random() * 3 + 2 + 's';
+      p.style.animationDelay = Math.random() * 5 + 's';
+      particlesContainer.appendChild(p);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
     function comprar(nome, imagem, preco) {
-      const produto = { nome, imagem, preco };
+      const produto = { nome, imagem, preco: parseFloat(preco) };
       localStorage.setItem('produtoSelecionado', JSON.stringify(produto));
       window.location.href = 'pagamento.html';
     }

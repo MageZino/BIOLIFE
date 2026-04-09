@@ -234,8 +234,10 @@ window.onload = () => {
   const produto = JSON.parse(localStorage.getItem('produtoSelecionado'));
   if (produto) {
     document.getElementById('produto-img').src = produto.imagem;
-    document.getElementById('produto-preco').textContent = 'R$ ' + produto.preco.toFixed(2);
-    document.getElementById('total-preco').textContent = 'R$ ' + produto.preco.toFixed(2);
+    // Garante que o preço seja tratado como número para o .toFixed
+    const precoNum = parseFloat(produto.preco);
+    document.getElementById('produto-preco').textContent = 'R$ ' + precoNum.toFixed(2);
+    document.getElementById('total-preco').textContent = 'R$ ' + precoNum.toFixed(2);
   }
 };
 
@@ -262,7 +264,9 @@ async function buscaCEP(cep) {
 
 document.getElementById('btnConfirmar').onclick = async () => {
   const btn = document.getElementById('btnConfirmar');
-  
+  const produto = JSON.parse(localStorage.getItem('produtoSelecionado'));
+
+  // 1. Pegando dados do formulário
   const dadosForm = {
     nome: document.getElementById('nome').value,
     email: document.getElementById('email').value,
@@ -273,9 +277,14 @@ document.getElementById('btnConfirmar').onclick = async () => {
     numero: document.getElementById('numero').value,
     bairro: document.getElementById('bairro').value,
     cidade: document.getElementById('cidade').value,
-    estado: document.getElementById('estado').value
+    estado: document.getElementById('estado').value,
+    
+    // --- ADICIONADO: Enviando dados do produto para o backend ---
+    nomeProduto: produto ? produto.nome : "Produto BioLife",
+    preco: produto ? produto.preco : 0
   };
 
+  // Validação básica
   if (!dadosForm.cpf || !dadosForm.cep || !dadosForm.numero || !dadosForm.nome) {
     alert("Por favor, preencha todos os campos obrigatórios.");
     return;
