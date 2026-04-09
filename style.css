@@ -1014,3 +1014,52 @@ html {
     transform: translateX(0%);
 }
 
+@media (max-width: 768px) {
+    /* Ajusta a altura da seção hero para não cortar a imagem no mobile */
+    .hero {
+        height: 50vh !important; /* Ajuste essa altura se ainda parecer cortado */
+        margin-top: 80px;
+    }
+
+    /* Evita que os botões fiquem um em cima do outro */
+    .carousel-button {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 1.1rem !important;
+    }
+
+    .carousel-button.prev {
+        left: 10px !important; /* Cola mais no canto esquerdo */
+    }
+
+    .carousel-button.next {
+        right: 10px !important; /* Cola mais no canto direito */
+    }
+
+    /* Ajusta o conteúdo (texto) para não sumir ou ficar gigante */
+    .carousel-content h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .carousel-content p {
+        font-size: 0.9rem !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limita a 2 linhas para não empurrar os botões */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+/* Efeito de Surgimento (Reveal) */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    visibility: hidden;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}

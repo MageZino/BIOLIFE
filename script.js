@@ -291,3 +291,21 @@ window.addEventListener("load", () => {
     if (loader) loader.style.pointerEvents = "none";
     if (slide) slide.style.pointerEvents = "none";
 });
+
+// Mecânica de aparecer ao rolar (Reveal)
+const revealElements = document.querySelectorAll(".about-card, .product-card, .section-title, .contact-content");
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+        }
+    });
+}, { 
+    threshold: 0.15 // Ativa quando 15% do elemento aparece
+});
+
+revealElements.forEach(el => {
+    el.classList.add("reveal"); // Adiciona a classe base automaticamente
+    revealObserver.observe(el);
+});
