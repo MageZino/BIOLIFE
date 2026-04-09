@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página de Pagamento</title>
+  <title>Página de Pagamento - BioLife</title>
   <link href="assets/img/logo.png" rel="icon" type="image/png">
 
   <style>
@@ -57,18 +57,19 @@
       margin: 20px 0 10px;
     }
 
-    label {
-      font-size: 0.9rem;
-      margin-top: 8px;
-    }
-
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
-      border: none;
+      border: 1px solid #333;
       background: #1e1e1e;
       color: white;
+      margin-bottom: 10px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
     }
 
     .row { display: flex; gap: 10px; }
@@ -79,7 +80,7 @@
     }
 
     .produto {
-      height: 160px;
+      height: 250px;
       border-radius: 12px;
       overflow: hidden;
       margin-bottom: 20px;
@@ -106,6 +107,9 @@
     .order-total {
       color: var(--primary-color);
       font-weight: bold;
+      font-size: 1.2rem;
+      border-top: 1px solid #333;
+      padding-top: 10px;
     }
 
     .btn-confirmar {
@@ -115,29 +119,53 @@
       border: none;
       border-radius: 25px;
       color: white;
+      font-weight: bold;
       cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-confirmar:hover {
+      background: #45a049;
+      transform: scale(1.02);
     }
 
     .overlay {
       position: fixed;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
       display: none;
       justify-content: center;
       align-items: center;
+      z-index: 999;
     }
 
     .popup {
       background: #111;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 30px;
+      border-radius: 15px;
       text-align: center;
+      max-width: 400px;
+      position: relative;
     }
 
-    .popup img {
-      width: 250px;
-      margin-bottom: 10px;
+    .close-popup {
+      position: absolute;
+      top: 10px; right: 15px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    #pix-code {
+      display: block;
+      background: #222;
+      padding: 10px;
+      margin-top: 10px;
+      word-break: break-all;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      border: 1px dashed var(--primary-color);
     }
   </style>
 </head>
@@ -145,14 +173,28 @@
 <body>
 
 <div class="checkout-container">
-
   <div class="left">
     <div class="logo"><img src="assets/img/logo.png"></div>
 
     <h2>Contato</h2>
-    <input id="nome" placeholder="Nome">
+    <input id="nome" placeholder="Nome Completo">
     <input id="email" placeholder="Email">
-    <input id="telefone" placeholder="Telefone">
+    <div class="row">
+      <input id="telefone" placeholder="Telefone (DDD + Número)">
+      <input id="cpf" placeholder="CPF (apenas números)">
+    </div>
+
+    <h2>Endereço de Entrega</h2>
+    <input id="cep" placeholder="CEP" onblur="buscaCEP(this.value)">
+    <div class="row">
+      <input id="rua" placeholder="Rua">
+      <input id="numero" placeholder="Nº" style="width: 30%;">
+    </div>
+    <input id="bairro" placeholder="Bairro">
+    <div class="row">
+      <input id="cidade" placeholder="Cidade">
+      <input id="estado" placeholder="UF" maxlength="2" style="width: 30%;">
+    </div>
 
     <button class="btn-confirmar" id="btnConfirmar">Pagar com PIX</button>
   </div>
@@ -174,21 +216,22 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="overlay" id="overlay">
   <div class="popup">
-    <h3>Pagamento via PIX</h3>
-    <img id="qr-code-img" src="" alt="QR Code Pix" style="width: 200px; height: 200px;" />
-    <p><strong id="pix-code"></strong></p>
+    <span class="close-popup" onclick="document.getElementById('overlay').style.display='none'">&times;</span>
+    <h3 style="margin-bottom: 20px;">Pagamento via PIX</h3>
+    <img id="qr-code-img" src="" alt="QR Code Pix" style="width: 250px; height: 250px; background: white; padding: 10px; border-radius: 10px;" />
+    <p style="margin-top: 15px; font-size: 0.9rem;">Copia e Cola:</p>
+    <strong id="pix-code"></strong>
+    <button class="btn-confirmar" style="width: 100%; margin-top: 15px;" onclick="document.getElementById('overlay').style.display='none'">Já paguei</button>
   </div>
 </div>
 
 <script>
 window.onload = () => {
   const produto = JSON.parse(localStorage.getItem('produtoSelecionado'));
-
   if (produto) {
     document.getElementById('produto-img').src = produto.imagem;
     document.getElementById('produto-preco').textContent = 'R$ ' + produto.preco.toFixed(2);
@@ -196,19 +239,52 @@ window.onload = () => {
   }
 };
 
+async function buscaCEP(cep) {
+  const cleanCEP = cep.replace(/\D/g, "");
+  if (cleanCEP.length === 8) {
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cleanCEP}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        document.getElementById('rua').value = data.logradouro;
+        document.getElementById('bairro').value = data.bairro;
+        document.getElementById('cidade').value = data.localidade;
+        document.getElementById('estado').value = data.uf;
+        document.getElementById('numero').focus();
+      } else {
+        alert("CEP não encontrado.");
+      }
+    } catch (e) {
+      console.error("Erro ao buscar CEP");
+    }
+  }
+}
+
 document.getElementById('btnConfirmar').onclick = async () => {
-  // Mostra um aviso ou muda o texto do botão para o usuário saber que está carregando
   const btn = document.getElementById('btnConfirmar');
-  btn.innerText = "Gerando PIX...";
+  
+  const dadosForm = {
+    nome: document.getElementById('nome').value,
+    email: document.getElementById('email').value,
+    telefone: document.getElementById('telefone').value,
+    cpf: document.getElementById('cpf').value,
+    cep: document.getElementById('cep').value,
+    rua: document.getElementById('rua').value,
+    numero: document.getElementById('numero').value,
+    bairro: document.getElementById('bairro').value,
+    cidade: document.getElementById('cidade').value,
+    estado: document.getElementById('estado').value
+  };
+
+  if (!dadosForm.cpf || !dadosForm.cep || !dadosForm.numero || !dadosForm.nome) {
+    alert("Por favor, preencha todos os campos obrigatórios.");
+    return;
+  }
+
+  btn.innerText = "Gerando QR Code...";
   btn.disabled = true;
 
   try {
-    const dadosForm = {
-      nome: document.getElementById('nome').value,
-      email: document.getElementById('email').value,
-      telefone: document.getElementById('telefone').value
-    };
-
     const response = await fetch('/api/create-pix', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -218,21 +294,15 @@ document.getElementById('btnConfirmar').onclick = async () => {
     const data = await response.json();
 
     if (data.qr_code_base64) {
-      // 1. CORREÇÃO DO ID: Aqui deve ser 'qr-code-img' para bater com o seu HTML
-      // 2. CORREÇÃO DO SRC: Como o backend já envia o prefixo, usamos direto o data.qr_code_base64
       document.getElementById('qr-code-img').src = data.qr_code_base64;
-
-      // Coloca o código copia e cola
       document.getElementById('pix-code').textContent = data.payload;
-
-      // Abre o popup
       document.getElementById('overlay').style.display = 'flex';
     } else {
-      alert("Erro ao gerar o pagamento. Verifique os dados.");
+      alert("Erro: " + (data.detalhes || "Verifique os dados digitados."));
     }
   } catch (error) {
     console.error("Erro:", error);
-    alert("Erro na conexão com o servidor.");
+    alert("Erro na conexão. Verifique se a API está rodando.");
   } finally {
     btn.innerText = "Pagar com PIX";
     btn.disabled = false;
