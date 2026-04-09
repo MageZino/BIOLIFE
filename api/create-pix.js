@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         customer: customerData.id,
         billingType: "PIX",
         value: parseFloat(preco), // <--- USA O PREÇO QUE VEM DO SITE
-        description: `Compra BioLife - ${nomeProduto}`, // <--- USA O NOME DO PRODUTO
+        description: `Compra BioLife - ${nomeProduto}`, // <--- USA O NOME DO PRODUT0
         dueDate: new Date().toISOString().split("T")[0]
       })
     });
