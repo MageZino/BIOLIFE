@@ -1015,68 +1015,57 @@ html {
 }
 
 @media (max-width: 768px) {
-    /* 1. Ajusta o container principal para dar espaço ao conteúdo */
+    /* 1. Aumentamos um pouco a altura para caber todo o texto e botão */
     .hero {
-        height: 500px !important; /* Altura fixa garante que nada suma */
+        height: 520px !important; 
         margin-top: 60px;
-        position: relative;
-        overflow: hidden;
     }
 
-    /* 2. Garante que o item do carrossel ocupe a altura toda */
+    /* 2. O SEGREDO: Faz a imagem se ajustar sem dar aquele zoom bizarro que corta tudo */
     .carousel-item {
+        background-size: cover !important; /* Mantém preenchido */
+        background-position: center center !important;
         height: 100% !important;
     }
 
-    /* 3. Centraliza o texto e evita que ele brigue com as setas */
+    /* 3. Ajuste do conteúdo para não encostar nas bordas */
     .carousel-content {
-        width: 85% !important;
+        width: 90% !important;
         left: 50% !important;
         top: 50% !important;
-        transform: translate(-50%, -50%) !important; /* Centralização perfeita */
-        padding: 15px !important;
-        text-align: center;
+        transform: translate(-50%, -50%) !important;
+        padding: 20px !important;
+        background: rgba(0, 0, 0, 0.4); /* Escurece um pouco o fundo para ler melhor */
+        border-radius: 15px;
     }
 
     .carousel-content h1 {
-        font-size: 1.6rem !important;
-        margin-bottom: 8px !important;
-        line-height: 1.2 !important;
+        font-size: 1.4rem !important; /* Diminuímos um pouco para não quebrar linha toda hora */
+        margin-bottom: 10px !important;
     }
     
     .carousel-content p {
-        font-size: 0.95rem !important;
-        line-height: 1.4 !important;
+        font-size: 0.85rem !important;
+        line-height: 1.3 !important;
         margin-bottom: 15px !important;
-        display: block !important; /* Removemos o line-clamp para o texto respirar se for curto */
+        max-width: 100% !important;
     }
 
-    /* 4. Botões de navegação: pequenos e nas extremidades */
-    .carousel-button {
-        width: 32px !important;
-        height: 32px !important;
-        background: rgba(0, 0, 0, 0.5) !important;
-        border-radius: 50% !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        z-index: 10;
-    }
-
-    .carousel-button.prev {
-        left: 5px !important;
-    }
-
-    .carousel-button.next {
-        right: 5px !important;
-    }
-
-    /* 5. Ajusta o botão principal para não ficar gigante */
+    /* 4. Botão menor para caber na tela */
     .btn-primary {
-        padding: 10px 20px !important;
-        font-size: 0.9rem !important;
-        width: auto !important;
-        display: inline-block !important;
+        padding: 8px 16px !important;
+        font-size: 0.85rem !important;
     }
+
+    /* 5. Setas: Vamos deixar bem no cantinho para não ficar em cima do texto */
+    .carousel-button {
+        width: 30px !important;
+        height: 30px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .carousel-button.prev { left: 2px !important; }
+    .carousel-button.next { right: 2px !important; }
 }
 
 /* Efeito de Surgimento (Reveal) */
