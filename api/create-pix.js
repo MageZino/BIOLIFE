@@ -1,15 +1,17 @@
 export default async function handler(req, res) {
-  const apiKey = "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjViN2Y1YTk4LThlOWItNDMyMC05YzQxLWJkYTdlMjExNGIxYzo6JGFhY2hfYWRkZTBhNzYtNmYxOC00NTlkLWE2MzQtMmYwNmE1YTEyNWVk";
+  // CONFIGURAÇÕES DE SANDBOX (TESTE)
+  const BASE_URL = "https://sandbox.asaas.com/api/v3";
+  const apiKey = "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjJkNGE4NWZkLWQ0YTktNDBhMi04NDdiLWFiM2Y1ZTJiNDk3Njo6JGFhY2hfNWI4NzZjZGMtZjhlNS00ZmQ1LWIxNTYtYzI3MmUyODhkMzU4";
 
-  // AGORA RECEBEMOS: nomeProduto e preco do frontend
+  // RECEBENDO DADOS DO FRONTEND
   const { 
     nome, email, telefone, cpf, cep, rua, numero, bairro, cidade, estado,
     nomeProduto, preco 
   } = req.body;
 
   try {
-    // 1. CRIAR OU ATUALIZAR O CLIENTE
-    const customerResponse = await fetch("https://api.asaas.com/v3/customers", {
+    // 1. CRIAR OU ATUALIZAR O CLIENTE NO SANDBOX
+    const customerResponse = await fetch(`${BASE_URL}/customers`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json", 
@@ -34,8 +36,8 @@ export default async function handler(req, res) {
       throw new Error(customerData.errors[0].description);
     }
 
-    // 2. CRIAR O PAGAMENTO (DINÂMICO)
-    const paymentResponse = await fetch("https://api.asaas.com/v3/payments", {
+    // 2. CRIAR O PAGAMENTO PIX NO SANDBOX
+    const paymentResponse = await fetch(`${BASE_URL}/payments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,8 +46,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         customer: customerData.id,
         billingType: "PIX",
-        value: parseFloat(preco), // <--- USA O PREÇO QUE VEM DO SITE
-        description: `Compra BioLife - ${nomeProduto}`, // <--- USA O NOME DO PRODUT0
+        value: parseFloat(preco), 
+        description: `Compra BioLife - ${nomeProduto}`,
         dueDate: new Date().toISOString().split("T")[0]
       })
     });
@@ -56,9 +58,9 @@ export default async function handler(req, res) {
       throw new Error(paymentData.errors[0].description);
     }
 
-    // 3. BUSCAR O QR CODE
+    // 3. BUSCAR O QR CODE NO SANDBOX
     const qrResponse = await fetch(
-      `https://api.asaas.com/v3/payments/${paymentData.id}/pixQrCode`,
+      `${BASE_URL}/payments/${paymentData.id}/pixQrCode`,
       {
         headers: { "access_token": apiKey }
       }
@@ -66,6 +68,7 @@ export default async function handler(req, res) {
 
     const qrData = await qrResponse.json();
 
+    // RETORNO PARA O FRONTEND
     res.status(200).json({
       qr_code_base64: `data:image/png;base64,${qrData.encodedImage}`,
       payload: qrData.payload

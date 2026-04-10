@@ -1,39 +1,34 @@
 export default async function handler(req, res) {
-
-  // 🔐 valida token (SEGURANÇA)
+  // 1. O Asaas envia o token no header 'asaas-access-token'
   const tokenRecebido = req.headers['asaas-access-token'];
-  const meuToken = "whsec_GuU5mlagzk4wqLPZAodRSZvOMDzKsohQLCD5XO0oLzU";
+  
+  // Certifique-se que este é o token gerado no painel SANDBOX
+  const meuToken = "whsec_Pq1NDhm1rdlpCc3Rrveoq_FBAksaPNZPwxUCKGpaiPs";
 
   if (tokenRecebido !== meuToken) {
-    console.log("❌ Token inválido");
-    return res.status(403).send("Acesso negado");
+    console.log("❌ Tentativa de acesso não autorizada ao Webhook");
+    return res.status(401).json({ error: "Token inválido" });
   }
 
   const body = req.body;
 
-  console.log("🔔 Webhook recebido:", body);
+  // Log para você debugar no painel da Vercel
+  console.log(`🔔 Evento recebido: ${body.event}`);
 
-  // ✅ só continua se for pagamento recebido
-  if (body.event === "PAYMENT_RECEIVED") {
-
-    console.log("💰 PAGAMENTO CONFIRMADO!");
-
+  // ✅ Verificamos CONFIRMED ou RECEIVED para garantir que o PIX foi pago
+  if (body.event === "PAYMENT_CONFIRMED" || body.event === "PAYMENT_RECEIVED") {
+    
     const pagamento = body.payment;
+    
+    console.log("💰 PAGAMENTO IDENTIFICADO COM SUCESSO!");
+    console.log(`ID da Cobrança: ${pagamento.id}`);
+    console.log(`Valor: R$ ${pagamento.value}`);
+    console.log(`Cliente ID: ${pagamento.customer}`);
 
-    const valor = pagamento.value;
-    const id = pagamento.id;
-
-    console.log("ID:", id);
-    console.log("Valor:", valor);
-
-    // 🚀 AQUI VAI SUA LÓGICA REAL
-
-    // exemplo:
-    // enviar email
-    // liberar produto
-    // salvar no banco
-
+    // 🚀 AQUI VOCÊ EXECUTA SUA LÓGICA
+    // Exemplo: await atualizarPedidoNoBanco(pagamento.externalReference);
   }
 
-  res.status(200).json({ received: true });
+  // O Asaas exige uma resposta 200 rápida para não tentar reenviar o webhook
+  return res.status(200).json({ received: true });
 }
