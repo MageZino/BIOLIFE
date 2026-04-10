@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const pagamento = body.payment;
     
     console.log("💰 PAGAMENTO IDENTIFICADO COM SUCESSO!");
-    console.log(`ID da Cobrança: ${pagamento.id}`);
+    console.log(`ID da Cobrança: ${pagamento.id}`); 
     console.log(`Valor: R$ ${pagamento.value}`);
     console.log(`Cliente ID: ${pagamento.customer}`);
 
