@@ -32,14 +32,13 @@
       width: 100%;
       max-width: 1000px;
       display: flex;
-      flex-direction: row; /* Lado a lado no PC */
+      flex-direction: row;
       background: var(--surface-alt);
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0,0,0,0.7);
     }
 
-    /* Lado Esquerdo - Formulário */
     .left {
       flex: 1.2;
       padding: 40px;
@@ -79,7 +78,6 @@
 
     .row { display: flex; gap: 12px; }
 
-    /* Lado Direito - Resumo */
     .right {
       flex: 0.8;
       padding: 40px;
@@ -100,7 +98,6 @@
     .produto-preview img {
       width: 100%;
       display: block;
-      transition: 0.5s;
     }
 
     .order-summary {
@@ -145,12 +142,8 @@
       transform: translateY(-2px);
     }
 
-    .btn-confirmar:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .btn-confirmar:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Pop-up do QR Code */
     .overlay {
       position: fixed;
       top: 0; left: 0;
@@ -185,34 +178,10 @@
       color: #ccc;
     }
 
-    /* --- RESPONSIVIDADE (MOBILE) --- */
     @media (max-width: 850px) {
-      body { padding: 10px; }
-      
-      .checkout-container {
-        flex-direction: column-reverse; /* Produto em cima, Form embaixo */
-        border-radius: 15px;
-      }
-
-      .left, .right {
-        width: 100%;
-        padding: 30px 20px;
-      }
-
-      .right {
-        background: var(--surface-color);
-        border-bottom: 1px solid #333;
-      }
-
-      .produto-preview {
-        max-width: 200px;
-        margin: 0 auto 20px;
-      }
-
-      .order-total { font-size: 1.3rem; }
-      
-      h2 { font-size: 1.1rem; text-align: center; }
-      
+      .checkout-container { flex-direction: column-reverse; }
+      .left, .right { width: 100%; padding: 30px 20px; }
+      .produto-preview { max-width: 200px; margin: 0 auto 20px; }
       .row { flex-direction: column; gap: 0; }
       .row input { width: 100% !important; }
     }
@@ -224,15 +193,13 @@
 <div class="checkout-container">
   <div class="left">
     <div class="logo"><img src="assets/img/logo.png"></div>
-
     <h2>Seus Dados</h2>
     <input id="nome" placeholder="Nome Completo">
-    <input id="email" placeholder="E-mail para receber o código">
+    <input id="email" placeholder="E-mail">
     <div class="row">
-      <input id="telefone" placeholder="Telefone com DDD">
-      <input id="cpf" placeholder="CPF (apenas números)">
+      <input id="telefone" placeholder="Telefone">
+      <input id="cpf" placeholder="CPF">
     </div>
-
     <h2>Entrega</h2>
     <input id="cep" placeholder="CEP" onblur="buscaCEP(this.value)">
     <div class="row">
@@ -244,7 +211,6 @@
       <input id="cidade" placeholder="Cidade">
       <input id="estado" placeholder="UF" maxlength="2" style="width: 30%;">
     </div>
-
     <button class="btn-confirmar" id="btnConfirmar">Gerar PIX para Pagar</button>
   </div>
 
@@ -252,17 +218,9 @@
     <div class="produto-preview">
       <img id="produto-img">
     </div>
-
     <div class="order-summary">
-      <div class="order-item">
-        <span>Item selecionado</span>
-        <span id="produto-preco">...</span>
-      </div>
-
-      <div class="order-total">
-        <span>Total a Pagar</span>
-        <span id="total-preco">...</span>
-      </div>
+      <div class="order-item"><span>Item selecionado</span><span id="produto-preco">...</span></div>
+      <div class="order-total"><span>Total a Pagar</span><span id="total-preco">...</span></div>
     </div>
   </div>
 </div>
@@ -271,12 +229,9 @@
   <div class="popup">
     <h3 style="color: var(--primary-color); margin-bottom: 15px;">Quase lá!</h3>
     <p style="font-size: 0.9rem; margin-bottom: 20px;">Aponte a câmera do seu banco para o QR Code abaixo:</p>
-    
     <img id="qr-code-img" src="" alt="QR Code Pix" style="width: 100%; max-width: 250px; background: white; padding: 10px; border-radius: 10px;" />
-    
     <p style="margin-top: 20px; font-size: 0.85rem;">Ou use o Pix Copia e Cola:</p>
     <code id="pix-code"></code>
-    
     <button class="btn-confirmar" onclick="document.getElementById('overlay').style.display='none'">Fechar</button>
   </div>
 </div>
@@ -329,7 +284,7 @@ document.getElementById('btnConfirmar').onclick = async () => {
   };
 
   if (!dadosForm.cpf || !dadosForm.cep || !dadosForm.numero || !dadosForm.nome) {
-    alert("Por favor, preencha os campos obrigatórios (Nome, CPF, CEP e Nº).");
+    alert("Por favor, preencha os campos obrigatórios.");
     return;
   }
 
@@ -344,16 +299,17 @@ document.getElementById('btnConfirmar').onclick = async () => {
     });
 
     const data = await response.json();
-
-    if (data.qr_code_base64) {
-      document.getElementById('qr-code-img').src = data.qr_code_base64;
+    const qrImage = data.qr_code_base64 || (data.encodedImage ? `data:image/png;base64,${data.encodedImage}` : null);
+    
+    if (qrImage && data.payload) {
+      document.getElementById('qr-code-img').src = qrImage;
       document.getElementById('pix-code').textContent = data.payload;
       document.getElementById('overlay').style.display = 'flex';
     } else {
-      alert("Erro ao gerar PIX: " + (data.detalhes || "Verifique os dados."));
+      alert("Erro ao gerar PIX: " + (data.detalhes || "Dados incompletos."));
     }
   } catch (error) {
-    alert("Erro de conexão com o servidor.");
+    alert("Erro de conexão.");
   } finally {
     btn.innerText = "Gerar PIX para Pagar";
     btn.disabled = false;
