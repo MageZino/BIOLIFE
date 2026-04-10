@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   // ✅ Verificamos CONFIRMED ou RECEIVED para garantir que o PIX foi pago
   if (body.event === "PAYMENT_CONFIRMED" || body.event === "PAYMENT_RECEIVED") {
       console.log("💰 PAGAMENTO CONFIRMADO!");
-      
+
     const pagamento = body.payment;
     
     console.log("💰 PAGAMENTO IDENTIFICADO COM SUCESSO!");
