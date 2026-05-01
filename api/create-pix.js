@@ -1,9 +1,9 @@
 export default async function handler(req, res) {
   // CONFIGURAÇÕES DE SANDBOX (TESTE)
   const BASE_URL = "https://sandbox.asaas.com/api/v3";
-  const apiKey = "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjJkNGE4NWZkLWQ0YTktNDBhMi04NDdiLWFiM2Y1ZTJiNDk3Njo6JGFhY2hfNWI4NzZjZGMtZjhlNS00ZmQ1LWIxNTYtYzI3MmUyODhkMzU4";
+  const apiKey = "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojc3NmY4ZjY1LTM0ZTEtNDI2Ny04YTkxLTczNWMxNTdmMmQyZTo6JGFhY2hfY2MxODAwMDEtYWUxMi00YTI5LTkwNmYtOTE4ZDQyYzRjOWZh";
 
-  // RECEBENDO DADOS DO FRONTEND
+  // RECEBENDO DADOS DO FRONTENDD
   const { 
     nome, email, telefone, cpf, cep, rua, numero, bairro, cidade, estado,
     nomeProduto, preco 
