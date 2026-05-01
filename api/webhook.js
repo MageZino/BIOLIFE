@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const tokenRecebido = req.headers['asaas-access-token'];
   
   // Certifique-se que este é o token gerado no painel SANDBOX
-  const meuToken = "whsec_F9jy0AFtm0S_3-hsQq1xZtZtm1T25xvU84FLTKR8uAs";
+  const meuToken = "whsec_vKehgaFVwPMz-Fz7XgG5PRxOACEo01oznnc4ZbOp6M0";
 
   if (tokenRecebido !== meuToken) {
     console.log("❌ Tentativa de acesso não autorizada ao Webhook");
